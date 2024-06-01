@@ -1,0 +1,45 @@
+import pandas as pd
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score,f1_score 
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import make_classification 
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+# Read the data into a DataFrame
+df = pd.read_csv('Boston (1).csv')
+
+# Display the DataFrame
+df
+#Training of dataset starts here.
+
+# Separate the response variable (MEDV) and feature variables
+X = df.drop(columns='CHAS')  # Features
+y = df['CHAS']              # Response variable
+
+#Train and test splitting of data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+print(y_test.shape, y_train.shape)
+X, y = make_classification(random_state = 42)
+
+#Train and test splitting of data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42)
+
+pipe = make_pipeline(StandardScaler(), LogisticRegression())
+pipe.fit(X_train, y_train)
+pipe.score(X_test, y_test)
+prediction = pipe.predict(X_test)
+accuracy = accuracy_score(y_test, prediction)
+confusion_max = confusion_matrix(y_test, prediction)
+precision = precision_score(y_test, prediction)
+recall = recall_score(y_test, prediction)
+f1 = f1_score(y_test, prediction)
+print(f' the predicted values are {prediction}')
+print(f' accuracy_score is {accuracy}')
+print(f' confusion_matrix is {confusion_max}')
+print(f' precision_score is {precision}')
+print(f' recall_score is {recall}')
+print(f' f1_score is {f1}')
+
